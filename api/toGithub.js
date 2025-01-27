@@ -42,6 +42,6 @@ export default async function handler(req, res) {
             res.status(response.status).json({ message: result.message });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+        res.status(500).json({ message: 'Internal Server Error in upload image to github', error: error });
     }
 }
