@@ -1,6 +1,13 @@
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Allowed HTTP methods
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allowed headers
+    res.setHeader('Access-Control-Max-Age', '86400'); // Cache the preflight response for 24 hours
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end(); // Respond to OPTIONS requests with a 200 status
+    }
     if (req.method !== 'POST') {
         return res.status(405).json({ message: 'Only POST requests allowed' });
     }
