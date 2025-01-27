@@ -48,7 +48,7 @@
                       imageBase64: base64Image,
                       repo: 'AS1624/ameliacdn',
                       branch: 'main',
-                      path: '', // Path in the repository where the image will be uploaded
+                      path: 'images', // Path in the repository where the image will be uploaded
                   };
 
                   const response = await fetch(apiUrl, {
@@ -65,7 +65,7 @@
                   status.textContent = 'Image uploaded successfully!';
   
                   // Fetch and display the uploaded image
-                  const rawImageUrl = `https://raw.githubusercontent.com/AS1624/ameliacdn/main/${file.name}`;
+                  const rawImageUrl = `https://raw.githubusercontent.com/AS1624/ameliacdn/main/images/${file.name}`;
                   displayImage(rawImageUrl);
               } catch (error) {
                   console.error('Error uploading image:', error);
