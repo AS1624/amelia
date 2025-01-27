@@ -1,0 +1,40 @@
+import fetch from 'node-fetch';
+
+export default async function handler(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ message: 'Only POST requests allowed' });
+    }
+
+    const { fileName, imageBase64, path } = req.body;
+
+    if (!fileName || !imageBase64 || !branch || !path) {
+        return res.status(400).json({ message: 'Missing required parameters' });
+    }
+    const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+    const url = `https://api.github.com/repos/ameliacdn/contents/${path}/${fileName}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${GITHUB_TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: `Add image ${fileName}`,
+                content: imageBase64, // Base64 string of the image
+                branch,
+            }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            res.status(200).json({ message: 'Image uploaded successfully' });
+        } else {
+            res.status(response.status).json({ message: result.message });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+}

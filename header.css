@@ -1,0 +1,72 @@
+header {
+    background: hotpink;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10000;
+}
+#top {
+    display: flex;
+    padding: 10px 5px 10px 5px;
+}
+#search-container {
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+#search-container > input {
+    font-size: large;
+    border-radius: 10px;
+    padding: 5px;
+    width: 100%;
+    border-color: hotpink;
+    outline: none;
+    box-shadow: none;
+}
+#search-container > input::placeholder {
+    color: gray;
+    font-style: italic;
+}
+#search-container > input :focus {
+    border-radius: 10px;
+    border-color: hotpink;
+    outline: none;
+    box-shadow: none;
+}
+#add-container {
+    width: 30%;
+    box-sizing: border-box;
+}
+#add-container > a {
+    float: right;
+}
+#quick-links{
+    background: deeppink;
+}
+
+.header-link {
+    padding: 5px 5px 5px 20px;
+    box-sizing: border-box;
+}
+.header-link > a {
+    padding: 5px;
+    text-decoration: none;
+    color: black;
+    font-size: x-large;
+    border: 2px solid transparent;
+    border-radius: 2px;
+    transition: border 0.3s ease;
+
+}
+.header-link > a:hover {
+    border: 2px solid white;
+}
+.header-link > a:focus {
+    border: none;
+}
+.ilb {
+    display: inline-block;
+}
