@@ -1,0 +1,81 @@
+#content {
+    padding: 5%;
+}
+#image-preview-container {
+    width: 100%;
+    position: relative;
+}
+img {
+    width: 100%;
+    height: auto;
+}
+#upload-button {
+    all: unset;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: x-large;
+    height: 30px;
+    border: 3px solid transparent;
+    transition: 0.3s ease;
+    background-color: gray;
+}
+#upload-button:hover {
+    border: 3px solid white;
+}
+#text-input > input {
+    font-size: x-large;
+    border-radius: 10px;
+    padding: 5px;
+    width: 100%;
+    border: 2px solid deeppink;
+    outline: none;
+    box-shadow: none;
+}
+#text-input > label {
+    font-size: x-large;
+
+}
+#text-input > label {
+    font-size: x-large;
+}
+#text-input > input::placeholder {
+    color: gray;
+    font-style: italic;
+}
+#image-input { display: none; }
+#image-input-label {
+    border-radius: 5px;
+    background-color: hotpink;
+    padding: 10px;
+    font-size: x-large;
+    border: 3px solid transparent;
+    transition: 0.3s ease;
+    height: 30px;
+    display: inline-block;
+}
+#image-input-label:hover {
+    border: 3px solid white;
+}
+
+#remove {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    background-color: #000000AA;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    display: flex;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    font-size: x-large;
+    box-shadow: none;
+    transition: 0.3s ease;
+}
+#remove:hover {
+    background-color: black;
+
+}

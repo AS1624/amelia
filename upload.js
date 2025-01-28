@@ -1,0 +1,68 @@
+
+async function toBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]); // Extract Base64 string
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
+
+async function uploadImageToGitHub(file) {
+    const status = document.getElementById('status');
+    status.textContent = 'Uploading image...';
+
+    try {
+        const base64Image = await toBase64(file);
+
+        // API endpoint of your Vercel backend
+        const apiUrl = 'https://ameliaoutfits.vercel.app/api/toGithub';
+
+        // Payload to send to the backend
+        const payload = {
+            fileName: file.name,
+            imageBase64: base64Image,
+            repo: 'AS1624/ameliacdn',
+            branch: 'main',
+            path: 'images', // Path in the repository where the image will be uploaded
+        };
+
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        status.textContent = 'Image uploaded successfully!';
+
+        // Fetch and display the uploaded image
+        const rawImageUrl = `https://raw.githubusercontent.com/AS1624/ameliacdn/main/images/${file.name}`;
+        displayImage(rawImageUrl);
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        status.textContent = 'Failed to upload image.';
+    }
+}
+
+function displayImage(url) {
+    const img = document.getElementById('uploadedImage');
+    img.src = url;
+    img.alt = 'Uploaded image';
+}
+
+document.getElementById('upload-button').addEventListener('click', async () => {
+    const imageInput = document.getElementById('image-input');
+    const file = imageInput.files[0];
+
+    if (!file) {
+        alert('Please select an image file to upload.');
+        return;
+    }
+
+    await uploadImageToGitHub(file);
+});

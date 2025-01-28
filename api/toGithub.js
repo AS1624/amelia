@@ -12,13 +12,13 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Only POST requests allowed' });
     }
 
-    const { fileName, imageBase64, path } = req.body;
+    const { fileName, imageBase64 } = req.body;
 
     if (!fileName || !imageBase64 || !path) {
         return res.status(400).json({ message: 'Missing required parameters' });
     }
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-    const url = `https://api.github.com/repos/AS1624/ameliacdn/contents/${path}/${fileName}`;
+    const url = `https://api.github.com/repos/AS1624/ameliacdn/contents/images/${fileName}`;
 
     try {
         const response = await fetch(url, {

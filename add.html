@@ -5,93 +5,87 @@
     <title>Add outfit</title>
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="body.css">
+    <link rel="stylesheet" href="add.css">
 </head>
 <body>
     <header>
         <div id="top">
             <span id="search-container">add new outfit</span>
         </div>
-        <div id="quick-links" class="header-link">
-            <a href="index.html?search=pink">pink</a>
-            <a href="index.html?search=emo">emo</a>
-        </div>
     </header>
     <div id="content">
-        <input type="file" id="imageInput" accept="image/*">
-        <button id="uploadButton">Upload to GitHub</button>
+        <div id="text-input" >
+            <label for="name">Name<br /></label>
+            <input type="text" id="name" placeholder="outfit name">
+            <br />
+            <br />
+            <label for="description">Description<br /></label>
+            <input type="text" id="description" placeholder="outfit description">
+            <br />
+            <br />
+            <label for="tags">Tags<br /></label>
+            <input type="text" id="tags" placeholder="tags">
+            <br />
+            <br />
+        </div>
+        <label id="image-input-label" for="image-input">Add Image</label>
+        <input type="file" id="image-input" accept="image/*">
+        <button id="upload-button">Upload</button>
         <p id="status"></p>
-        <img id="uploadedImage" alt="Uploaded image will appear here">
+        <br />
+        <br />
+        <div id="image-preview-container">
+            <img id="uploaded-image" alt="">
+        </div>
+        <p id="response"></p>
 
         <script>
-        async function toBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result.split(',')[1]); // Extract Base64 string
-                reader.onerror = (error) => reject(error);
-                reader.readAsDataURL(file);
-            });
-          }
-
-          async function uploadImageToGitHub(file) {
-              const status = document.getElementById('status');
-              status.textContent = 'Uploading image...';
-
-              try {
-                  const base64Image = await toBase64(file);
-
-                  // API endpoint of your Vercel backend
-                  const apiUrl = 'https://ameliaoutfits.vercel.app/api/toGithub';
-  
-                  // Payload to send to the backend
-                  const payload = {
-                      fileName: file.name,
-                      imageBase64: base64Image,
-                      repo: 'AS1624/ameliacdn',
-                      branch: 'main',
-                      path: 'images', // Path in the repository where the image will be uploaded
-                  };
-
-                  const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                  });
-
-                  if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
-                  }
-
-                  const result = await response.json();
-                  status.textContent = 'Image uploaded successfully!';
-  
-                  // Fetch and display the uploaded image
-                  const rawImageUrl = `https://raw.githubusercontent.com/AS1624/ameliacdn/main/images/${file.name}`;
-                  displayImage(rawImageUrl);
-              } catch (error) {
-                  console.error('Error uploading image:', error);
-                  status.textContent = 'Failed to upload image.';
-              }
-          }
-
-            function displayImage(url) {
-              const img = document.getElementById('uploadedImage');
-              img.src = url;
-              img.alt = 'Uploaded image';
+            let uploadButton = document.getElementById("upload-button");
+            function updateShownImage() {
+                let input = document.getElementById("image-input");
+                let image = document.getElementById("uploaded-image");
+                if(input.files.length > 0){
+                    image.src = window.URL.createObjectURL(
+                        input.files[0]
+                    );
+                    document.getElementById("image-preview-container").innerHTML += (
+                        "<button id=\"remove\"> X </button>"
+                    )
+                    document.getElementById("remove").addEventListener("click", () => {
+                        //remove image input's files, leave the input itself
+                        input.value = ""
+                        document.getElementById("remove").remove();
+                        updateShownImage()
+                    })
+                }
+                else {
+                    image.src = ""
+                }
             }
 
-            document.getElementById('uploadButton').addEventListener('click', async () => {
-              const imageInput = document.getElementById('imageInput');
-              const file = imageInput.files[0];
-
-              if (!file) {
-                alert('Please select an image file to upload.');
-                return;
-              }
-
-              await uploadImageToGitHub(file);
+            if(document.getElementById("image-input").files.length > 0){
+                updateShownImage();
+            }
+            document.getElementById("image-input").addEventListener("change", () => {
+                console.log("image changed");
+                updateShownImage();
             });
-          </script>
-        <p id="response"></p>
+            document.getElementById("text-input").addEventListener("input", function(event) {
+                console.log("upload status changed");
+                console.log(document.getElementById("image-input").files[0])
+                if (document.getElementById("name").value === ""
+                    || document.getElementById("description").value === ""
+                    || document.getElementById("tags").value === ""
+                    || document.getElementById("image-input").files.length === 0
+                ) {
+                    uploadButton.style.background = "gray";
+                } else {
+                    uploadButton.style.background = "hotpink";
+                }
+            })
+
+        </script>
+        <script src="upload.js"></script>
     </div>
 </body>
 </html>
