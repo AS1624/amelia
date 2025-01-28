@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
     const { fileName, imageBase64, path } = req.body;
 
-    if (!fileName || !imageBase64 || !branch || !path) {
+    if (!fileName || !imageBase64 || !path) {
         return res.status(400).json({ message: 'Missing required parameters' });
     }
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 message: `Add image ${fileName}`,
                 content: imageBase64, // Base64 string of the image
-                branch,
+                branch: "main",
             }),
         });
 
