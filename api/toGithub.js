@@ -18,7 +18,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ message: 'Missing required parameters' });
     }
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-    const url = `https://api.github.com/repos/ameliacdn/contents/${path}/${fileName}`;
+    const url = `https://api.github.com/repos/AS1624/ameliacdn/contents/${path}/${fileName}`;
 
     try {
         const response = await fetch(url, {
@@ -39,7 +39,11 @@ export default async function handler(req, res) {
         if (response.ok) {
             res.status(200).json({ message: 'Image uploaded successfully' });
         } else {
-            res.status(response.status).json({ message: result.message });
+            res.status(500).json({
+                    message: (`Internal server error, rejected by github with ` +
+                        `${result.status}: ${result.message}`)
+                }
+            );
         }
     } catch (error) {
         res.status(500).json({ message: 'Internal Server Error in upload image to github', error: error });
