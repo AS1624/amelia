@@ -14,9 +14,9 @@ export default async function handler(req, res) {
 
     const { name, description, tags, imageBase64 } = req.body;
 
-    if (!name) return res.status(400).json({message: "missing name"})
+    if (!name)        return res.status(400).json({message: "missing name"})
     if (!description) return res.status(400).json({message: "missing description"})
-    if (!tags) return res.status(400).json({message: "missing tags"})
+    if (!tags)        return res.status(400).json({message: "missing tags"})
     if (!imageBase64) return res.status(400).json({message: "missing imageBase64"})
     try {
         await makeCommit(
@@ -36,6 +36,8 @@ export default async function handler(req, res) {
             `add ${name} [server]`
         )
     } catch (error) {
+        console.log(error.stack);
+        console.log(error.message);
         res.status(500).json({
             message: 'Internal Server Error in upload image to github',
             error: error.message
