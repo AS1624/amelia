@@ -31,7 +31,7 @@ function toGithub(req, res) {
         makeCommit(
             {
                 path: `json/${
-                    (Math.random().toString(16)).substring(0, 6)
+                    (Math.random().toString(16)).substring(2, 8)
                 }`,
                 content: JSON.stringify(
                     {
@@ -71,8 +71,6 @@ function makeCommit(file, commitMessage) {
         {
             message: commitMessage,
             content: Buffer.from(file.content, "utf-8").toString("base64"),
-            sha: null,
-            branch: BRANCH, // The branch to commit to
         },
         authHeaders
     ).then(r => { return r } );
