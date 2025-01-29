@@ -32,7 +32,7 @@ export default async function handler(req, res) {
                         imageBase64: imageBase64
                     }
                 ),
-            }
+            },
             `add ${name} [server]`
         )
     } catch (error) {
