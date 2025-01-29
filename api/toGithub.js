@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+export default async function toGithub(req, res) {
     const fetch = (await import('node-fetch')).default;
 
     res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
