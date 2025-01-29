@@ -4,6 +4,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 app.use(cors());
+app.use(express.json());
 // Basic route
 app.get('/', (req, res) => {
     res.send('Hello, World!');
@@ -15,18 +16,11 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 function toGithub(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Allowed HTTP methods
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allowed headers
-    res.setHeader('Access-Control-Max-Age', '86400'); // Cache the preflight response for 24 hours
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end(); // Respond to OPTIONS requests with a 200 status
-    }
     if (req.method !== 'POST') {
         return res.status(405).json({ message: 'Only POST requests allowed' });
     }
 
-    console.log(req.body);
+    console.log(req);
     const { name, description, tags, imageBase64 } = req.body;
 
     if (!name)        return res.status(400).json({message: "missing name"})
