@@ -45,7 +45,7 @@ export default async function handler(req, res) {
     }
 }
 
-async function makeCommit(files, commitMessage) {
+async function makeCommit(file, commitMessage) {
     const axios = (await import("axios")).default;
 
     const GITHUB_API_BASE = "https://api.github.com";
@@ -74,31 +74,29 @@ async function makeCommit(files, commitMessage) {
     const baseTreeSha = commitResponse.data.tree.sha;
 
     // Step 2: Create blobs for each file
-    const blobs = await Promise.all(
-        files.map(async (file) => {
-            const blobResponse = await axios.post(
-                `${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/git/blobs`,
-                {
-                    content: file.content,
-                    encoding: "utf-8",
-                },
-                authHeaders
-            );
-            return { path: file.path, sha: blobResponse.data.sha };
-        })
+    const blobResponse = await axios.post(
+        `${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/git/blobs`,
+        {
+            content: file.content,
+            encoding: "utf-8",
+        },
+        authHeaders
     );
+    const blob = {path: file.path, sha: blobResponse.data.sha};
 
     // Step 3: Create a new tree with the blobs
     const treeResponse = await axios.post(
         `${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/git/trees`,
         {
             base_tree: baseTreeSha,
-            tree: blobs.map((blob) => ({
-                path: blob.path,
-                mode: "100644", // Regular file
-                type: "blob",
-                sha: blob.sha,
-            })),
+            tree: [
+                {
+                    path: blob.path,
+                    mode: "100644", // Regular file
+                    type: "blob",
+                    sha: blob.sha,
+                },
+            ],
         },
         authHeaders
     );
