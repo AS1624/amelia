@@ -8,7 +8,7 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
-app.get('/api/toGithub', toGithub);
+app.post('/api/toGithub', toGithub);
 
 // Start the server
 app.listen(port, () => {

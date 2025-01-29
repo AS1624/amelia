@@ -12,7 +12,7 @@ async function sendToBackend(name, description, tags, file) {
     try {
         const imageBase64 = await toBase64(file);
 
-        const apiUrl = 'https://amelia-production.up.railway.app/'
+        const apiUrl = 'https://amelia-production.up.railway.app/api/toGithub'
 
         // Payload to send to the backend
         const payload = {
