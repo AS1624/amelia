@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 8080;
 
@@ -53,8 +54,6 @@ function toGithub(req, res) {
     }
 }
 function makeCommit(file, commitMessage) {
-    const axios = import("axios").default;
-
     const GITHUB_API_BASE = "https://api.github.com";
     const OWNER = "AS1624";
     const REPO = "ameliacdn";
@@ -76,5 +75,5 @@ function makeCommit(file, commitMessage) {
             branch: BRANCH, // The branch to commit to
         },
         authHeaders
-    );
+    ).then(r => { return r } );
 }
