@@ -1,6 +1,32 @@
-#content {
-    margin: 50px;
-}
 #outfit-container{
+    display: inline-block;
+    width: 50%;
+    border-radius: 20px;
+    border: 2px solid deeppink;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    background: hotpink;
+    box-sizing: border-box;
 
+}
+#outfit-container > img {
+    width: 90%;
+}
+#outfit-name {
+    margin: 0;
+}
+#tag-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+#outfit-tag {
+    background: gray;
+    border-radius: 10px;
+    padding: 5px;
+    display: flex;
+    width: min-content;
+    text-align: center;
+    justify-content: center;
 }

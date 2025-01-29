@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="body.css">
+    <link rel="stylesheet" href="content.css">
 </head>
 <body>
     <header>
         <div id="top">
             <div id="search-container" class="ilb">
-                <label for="search">search:&nbsp;&nbsp;</label>
                 <input id="search" type="text" placeholder="search styles, colors, etc."/>
             </div>
             <div id="add-container" class="ilb header-link">
@@ -32,11 +32,18 @@
         getOutfits().then(outfits => {
             outfits.forEach(outfit => {
                 console.log(outfit);
-                content.innerHTML += `
-            <div id="outfit">
-                <img src="" alt="">
-            </div>
+                let innerContent = `
+            <div id="outfit-container">
+                <h3 id="outfit-name">${outfit.name}</h3>
+                <img src="${URL.createObjectURL(outfit.blob)}" alt="">
+                <div id="tag-container">
             `
+                //<div id="outfit-description">${outfit.description}</div>
+                outfit.tags.toString().split(" ").forEach(tag => {
+                    innerContent += `<span id="outfit-tag">${tag}</span>`
+                })
+                innerContent += "</div>\n</div>"
+                content.innerHTML = innerContent
             })
         })
     </script>
