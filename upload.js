@@ -12,8 +12,7 @@ async function sendToBackend(name, description, tags, file) {
     try {
         const imageBase64 = await toBase64(file);
 
-        // API endpoint of your Vercel backend
-        const apiUrl = 'https://ameliaoutfits.vercel.app/api/toGithub';
+        const apiUrl = 'https://amelia-production.up.railway.app/'
 
         // Payload to send to the backend
         const payload = {
