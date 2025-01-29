@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add outfit</title>
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="body.css">
@@ -11,66 +12,69 @@
     <header>
         <div id="top">
             <span id="search-container">add new outfit</span>
+            <button id="upload-button" class="disabled">Upload</button>
         </div>
     </header>
     <div id="content">
-        <div id="text-input" >
+        <div id="text-input-container" >
             <label for="name">Name<br /></label>
-            <input type="text" id="name" placeholder="outfit name">
+            <input type="text" id="name" class="form-input" placeholder="outfit name">
             <br />
             <br />
             <label for="description">Description<br /></label>
-            <input type="text" id="description" placeholder="outfit description">
+            <textarea
+                    id="description"
+                    class="form-input"
+                    placeholder="clothes included: top, bottom, ect."
+                    rows="4"
+            >
+            </textarea>
             <br />
             <br />
             <label for="tags">Tags<br /></label>
-            <input type="text" id="tags" placeholder="tags">
+            <input type="text" id="tags" class="form-input" placeholder="tags">
             <br />
             <br />
         </div>
-        <label id="image-input-label" for="image-input">Add Image</label>
-        <input type="file" id="image-input" accept="image/*">
-        <button id="upload-button">Upload</button>
         <p id="status"></p>
         <br />
         <br />
-        <div id="image-preview-container">
-            <img id="uploaded-image" alt="">
+        <div id="image-input-container">
+            <label id="image-input-label" for="image-input">Add Image</label>
+            <input type="file" id="image-input" accept="image/*">
         </div>
         <p id="response"></p>
 
         <script>
-            let uploadButton = document.getElementById("upload-button");
-            function updateShownImage() {
+            showInput()
+            document.getElementById("content").addEventListener("input", updateInputStatus)
+            function showImage() {
                 let input = document.getElementById("image-input");
-                let image = document.getElementById("uploaded-image");
-                if(input.files.length > 0){
-                    image.src = window.URL.createObjectURL(
+                document.getElementById("image-input-container").innerHTML = (
+                    "<img src=\""
+                    + window.URL.createObjectURL(
                         input.files[0]
-                    );
-                    document.getElementById("image-preview-container").innerHTML += (
-                        "<button id=\"remove\"> X </button>"
                     )
-                    document.getElementById("remove").addEventListener("click", () => {
-                        //remove image input's files, leave the input itself
-                        input.value = ""
-                        document.getElementById("remove").remove();
-                        updateShownImage()
-                    })
-                }
-                else {
-                    image.src = ""
-                }
+                    + "\" id=\"image-display\">"
+                    + "\n <button id=\"remove\"> X </button>"
+                );
+                document.getElementById("remove").addEventListener("click", () => {
+                    showInput()
+                    updateInputStatus()
+                })
             }
-
-            if(document.getElementById("image-input").files.length > 0){
-                updateShownImage();
+            function showInput() {
+                document.getElementById("image-input-container").innerHTML = (
+                    `<label id="image-input-label" for="image-input">Add Image</label>`
+                    + `<input type="file" id="image-input" accept="image/*">`
+                )
+                document.getElementById("image-input").addEventListener("input", () => {
+                    updateInputStatus()
+                    showImage()
+                })
             }
-            document.getElementById("image-input").addEventListener("change", () => {
-                console.log("image changed");
-                updateShownImage();
-            });
-            document.getElementById("text-input").addEventListener("input", function(event) {
+            function updateInputStatus(event) {
+                let uploadButton = document.getElementById("upload-button");
                 console.log("upload status changed");
                 console.log(document.getElementById("image-input").files[0])
                 if (document.getElementById("name").value === ""
@@ -78,14 +82,29 @@
                     || document.getElementById("tags").value === ""
                     || document.getElementById("image-input").files.length === 0
                 ) {
-                    uploadButton.style.background = "gray";
+                    uploadButton.className = "disabled"
                 } else {
-                    uploadButton.style.background = "hotpink";
+                    uploadButton.className = "enabled"
                 }
-            })
-
+            }
         </script>
         <script src="upload.js"></script>
+        <script>
+            let button = document.getElementById('upload-button');
+            button.addEventListener('click', async () => {
+                if(button.className === "enabled") {
+                    const imageInput = document.getElementById('image-input');
+                    const file = imageInput.files[0];
+
+                    if (!file) {
+                        alert('Please select an image file to upload.');
+                        return;
+                    }
+
+                    await uploadImageToGitHub(file);
+                }
+            });
+        </script>
     </div>
 </body>
 </html>
