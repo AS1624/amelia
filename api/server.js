@@ -20,7 +20,6 @@ function toGithub(req, res) {
         return res.status(405).json({ message: 'Only POST requests allowed' });
     }
 
-    console.log(req);
     const { name, description, tags, imageBase64 } = req.body;
 
     if (!name)        return res.status(400).json({message: "missing name"})
