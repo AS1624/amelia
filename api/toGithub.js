@@ -44,7 +44,6 @@ export default async function handler(req, res) {
         });
     }
 }
-
 async function makeCommit(file, commitMessage) {
     const axios = (await import("axios")).default;
 
@@ -60,64 +59,15 @@ async function makeCommit(file, commitMessage) {
         },
     };
 
-    // Step 1: Get the current commit and tree for the branch
-    const branchResponse = await axios.get(
-        `${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/git/ref/heads/${BRANCH}`,
-        authHeaders
-    );
-    const currentCommitSha = branchResponse.data.object.sha;
-
-    const commitResponse = await axios.get(
-        `${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/git/commits/${currentCommitSha}`,
-        authHeaders
-    );
-    const baseTreeSha = commitResponse.data.tree.sha;
-
-    // Step 2: Create blobs for each file
-    const blobResponse = await axios.post(
-        `${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/git/blobs`,
-        {
-            content: file.content,
-            encoding: "utf-8",
-        },
-        authHeaders
-    );
-    const blob = {path: file.path, sha: blobResponse.data.sha};
-
-    // Step 3: Create a new tree with the blobs
-    const treeResponse = await axios.post(
-        `${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/git/trees`,
-        {
-            base_tree: baseTreeSha,
-            tree: [
-                {
-                    path: blob.path,
-                    mode: "100644", // Regular file
-                    type: "blob",
-                    sha: blob.sha,
-                },
-            ],
-        },
-        authHeaders
-    );
-
-    // Step 4: Create a new commit
-    const commitResponseNew = await axios.post(
-        `${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/git/commits`,
+    await axios.put(
+        `${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/contents/${file.path}`,
         {
             message: commitMessage,
-            tree: treeResponse.data.sha,
-            parents: [currentCommitSha],
-        },
-        authHeaders
-    );
-
-    // Step 5: Update the branch to point to the new commit
-    await axios.patch(
-        `${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/git/refs/heads/${BRANCH}`,
-        {
-            sha: commitResponseNew.data.sha,
+            content: Buffer.from(file.content, "utf-8").toString("base64"),
+            sha: null,
+            branch: BRANCH, // The branch to commit to
         },
         authHeaders
     );
 }
+
