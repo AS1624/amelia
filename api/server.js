@@ -8,15 +8,13 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
-app.post('/api/toGithub', toGithub);
+app.post('/api/toGithub', (req, res) => {toGithub(req, res);});
 
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 function toGithub(req, res) {
-    const fetch = import('node-fetch').default;
-
     res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Allowed HTTP methods
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allowed headers
@@ -28,6 +26,7 @@ function toGithub(req, res) {
         return res.status(405).json({ message: 'Only POST requests allowed' });
     }
 
+    console.log(req.body);
     const { name, description, tags, imageBase64 } = req.body;
 
     if (!name)        return res.status(400).json({message: "missing name"})

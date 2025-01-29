@@ -86,6 +86,7 @@
             let button = document.getElementById('upload-button');
             button.addEventListener('click', async () => {
                 if(button.className === "enabled" && file) {
+                    console.log("uploading!")
                     await sendToBackend(
                         document.getElementById('name').value,
                         document.getElementById('description').value,
