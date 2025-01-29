@@ -11,12 +11,28 @@ async function listRepoFiles(owner, repo, path = "") {
         }
 
         const data = await response.json();
-        return data.map(file => file.name);
+        return Promise.all(
+            data.map(async file => {
+                return await fetch(file.url)
+            })
+        ).then(results => { return results; });
     } catch (error) {
         console.error("Error fetching repository contents:", error);
         return [];
     }
 }
+function base64ToBlob(base64, mimeType = '') {
+    const byteCharacters = atob(base64); // Decode Base64
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+}
+
 
 // Example usage
-listRepoFiles("AS1624", "ameliacdn", "images").then(files => console.log(files));
+async function getOutfits() { return await listRepoFiles("AS1624", "ameliacdn", "json"); }

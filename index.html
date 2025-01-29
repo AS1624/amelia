@@ -25,7 +25,20 @@
     </header>
 
     <div id="content">
-        test
     </div>
+    <script src="enumerate.js"></script>
+    <script>
+        let content = document.getElementById('content');
+        getOutfits().then(outfits => {
+            outfits.forEach(outfit => {
+                console.log(outfit);
+                content.innerHTML += `
+            <div id="outfit">
+                <img src="" alt="">
+            </div>
+            `
+            })
+        })
+    </script>
 </body>
 </html>

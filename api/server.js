@@ -36,7 +36,7 @@ function toGithub(req, res) {
             {
                 path: `json/${
                     (Math.random().toString(16)).substring(2, 8)
-                }`,
+                }.json`,
                 content: JSON.stringify(
                     {
                         name: name,
@@ -61,7 +61,7 @@ function toGithub(req, res) {
 function makeCommit(file, commitMessage) {
     const GITHUB_API_BASE = "https://api.github.com";
     const OWNER = "AS1624";
-    const REPO = "ameliacdn";
+    const REPO = "amelia";
     const BRANCH = "main";
     const TOKEN = process.env.GITHUB_TOKEN;
     const authHeaders = {
