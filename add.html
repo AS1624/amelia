@@ -17,35 +17,25 @@
     </header>
     <div id="content">
         <div id="text-input-container" >
-            <label for="name">Name<br /></label>
             <input type="text" id="name" class="form-input" placeholder="outfit name">
-            <br />
-            <br />
-            <label for="description">Description<br /></label>
             <textarea
                     id="description"
                     class="form-input"
-                    placeholder="clothes included: top, bottom, ect."
+                    placeholder="clothes included: top, bottom, etc."
                     rows="4"
             >
             </textarea>
-            <br />
-            <br />
-            <label for="tags">Tags<br /></label>
             <input type="text" id="tags" class="form-input" placeholder="tags">
-            <br />
-            <br />
         </div>
-        <p id="status"></p>
-        <br />
-        <br />
         <div id="image-input-container">
             <label id="image-input-label" for="image-input">Add Image</label>
             <input type="file" id="image-input" accept="image/*">
         </div>
         <p id="response"></p>
+        <script src="enumerate.js"></script>
 
         <script>
+            let file = null
             showInput()
             document.getElementById("content").addEventListener("input", updateInputStatus)
             function showImage() {
@@ -62,6 +52,7 @@
                     showInput()
                     updateInputStatus()
                 })
+                document.getElementById("image-input-container").className = "has-image"
             }
             function showInput() {
                 document.getElementById("image-input-container").innerHTML = (
@@ -72,11 +63,13 @@
                     updateInputStatus()
                     showImage()
                 })
+                document.getElementById("image-input-container").className = "has-upload"
             }
             function updateInputStatus(event) {
                 let uploadButton = document.getElementById("upload-button");
                 console.log("upload status changed");
                 console.log(document.getElementById("image-input").files[0])
+                file = document.getElementById("image-input").files[0]
                 if (document.getElementById("name").value === ""
                     || document.getElementById("description").value === ""
                     || document.getElementById("tags").value === ""
@@ -92,16 +85,13 @@
         <script>
             let button = document.getElementById('upload-button');
             button.addEventListener('click', async () => {
-                if(button.className === "enabled") {
-                    const imageInput = document.getElementById('image-input');
-                    const file = imageInput.files[0];
-
-                    if (!file) {
-                        alert('Please select an image file to upload.');
-                        return;
-                    }
-
-                    await uploadImageToGitHub(file);
+                if(button.className === "enabled" && file) {
+                    await sendToBackend(
+                        document.getElementById('name').value,
+                        document.getElementById('description').value,
+                        document.getElementById('tags').value,
+                        file
+                    );
                 }
             });
         </script>

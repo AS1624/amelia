@@ -1,21 +1,6 @@
 #content {
     padding: 5%;
 }
-#image-input-container {
-    width: 90%;
-    margin: 5%;
-    aspect-ratio: 1;
-    border: 5px solid deeppink;
-    border-radius: 50px;
-    position: relative;
-    display: grid;
-    place-items: center;
-}
-img {
-    width: 100%;
-    height: auto;
-    border-radius: 50px;
-}
 #upload-button {
     all: unset;
     border-radius: 5px;
@@ -26,23 +11,41 @@ img {
     transition: 0.3s ease;
     margin: 10px;
 }
-#upload-button.enabled { background: hotpink; }
+#upload-button.enabled { background: deeppink; }
 #upload-button.enabled:hover { border: 3px solid white; }
 #upload-button.disabled { !important; background: gray; }
 .form-input {
-    font-size: x-large;
-    border-radius: 10px;
-    padding: 5px;
     width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: x-large;
     border: 2px solid deeppink;
+    border-radius: 10px;
     outline: none;
     box-shadow: none;
+    display: block;
 }
 .form-input::placeholder {
     color: gray;
     font-style: italic;
 }
-#text-input-container > label { font-size: x-large; }
+#text-input-container > label {
+    font-size: x-large;
+}
+#image-input-container {
+    margin-top: 20px;
+    border: 2px solid deeppink;
+    background: lightpink;
+    border-radius: 10px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+#image-input-container.has-image  { aspect-ratio: unset; }
+#image-input-container.has-upload { aspect-ratio: 1; }
 #image-input { display: none; }
 #image-input-label {
     border-radius: 5px;
@@ -56,11 +59,14 @@ img {
 #image-input-label:hover {
     border: 3px solid white;
 }
-
+img {
+    width: 103%;
+    height: auto;
+}
 #remove {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 10px;
+    right: 10px;
     z-index: 1000;
     background-color: #000000AA;
     color: white;
