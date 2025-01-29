@@ -51,11 +51,12 @@ function toGithub(req, res) {
     } catch (error) {
         console.log(error.stack);
         console.log(error.message);
-        res.status(500).json({
+        return res.status(500).json({
             message: 'Internal Server Error in upload image to github',
             error: error.message
         });
     }
+    return res.status(200).json({message: 'Successfully added'})
 }
 function makeCommit(file, commitMessage) {
     const GITHUB_API_BASE = "https://api.github.com";
