@@ -13,7 +13,7 @@ async function getOutfits() {
         const data = await response.json();
         return Promise.all(
             data.map(async file => {
-                return (await fetch("/json/" + file.name).then(result => result.json()));
+                return (await fetch("json/" + file.name).then(result => result.json()));
             })
         ).then(results => { return results.map(json => {
             return {
