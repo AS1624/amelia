@@ -28,24 +28,7 @@
     </div>
     <script src="enumerate.js"></script>
     <script>
-        let content = document.getElementById('content');
-        getOutfits().then(outfits => {
-            outfits.forEach(outfit => {
-                console.log(outfit);
-                let innerContent = `<div id="outfit-container">
-                        <h3 id="outfit-name">${outfit.name}</h3>
-                        <div id="outfit-img-container">
-                            <img src="${URL.createObjectURL(outfit.blob)}" alt="">
-                        </div>
-                        <div id="tag-container">`
-                //<div id="outfit-description">${outfit.description}</div>
-                outfit.tags.toString().split(" ").forEach(tag => {
-                    innerContent += `<span id="outfit-tag">${tag}</span>`
-                })
-                innerContent += "</div></div>"
-                content.innerHTML += innerContent
-            })
-        })
+        getOutfits();
     </script>
 </body>
 </html>

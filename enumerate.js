@@ -11,22 +11,39 @@ async function getOutfits() {
         }
 
         const data = await response.json();
-        return Promise.all(
-            data.map(async file => {
-                return (await fetch("json/" + file.name).then(result => result.json()));
-            })
-        ).then(results => { return results.map(json => {
-            return {
-                name: json.name,
-                description: json.description,
-                tags: json.tags,
-                blob: base64ToBlob(json.imageBase64),
+        console.log(data);
+        data.map(async file => {
+            try {
+                let json = await fetch("json/" + file.name).then(result => result.json())
+                let outfit = {
+                    name: json.name,
+                    description: json.description,
+                    tags: json.tags,
+                    blob: base64ToBlob(json.imageBase64),
+                }
+                let content = document.getElementById('content');
+
+                console.log(outfit);
+                let innerContent = `<div id="outfit-container">
+                    <h3 id="outfit-name">${outfit.name}</h3>
+                    <div id="outfit-img-container">
+                        <img src="${URL.createObjectURL(outfit.blob)}" alt="">
+                    </div>
+                    <div id="tag-container">`
+                //<div id="outfit-description">${outfit.description}</div>
+                outfit.tags.toString().split(" ").forEach(tag => {
+                    innerContent += `<span id="outfit-tag">${tag}</span>`
+                })
+                innerContent += "</div></div>"
+                content.innerHTML += innerContent
             }
+            catch (error) {
+                console.log(error);
             }
-        )});
+        })
+
     } catch (error) {
         console.error("Error fetching repository contents:", error);
-        return [];
     }
 }
 function base64ToBlob(base64, mimeType = '') {
