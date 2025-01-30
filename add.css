@@ -4,12 +4,20 @@
 #upload-button {
     all: unset;
     border-radius: 5px;
-    padding: 10px;
-    font-size: large;
+    padding: 3px;
+    font-size: x-large;
     transition: 0.3s ease;
+    border: 2px solid transparent;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+#spacer {
+    width: 100%;
+    font-size: x-large;
+    text-align: center;
 }
 #upload-button.enabled { background: deeppink; }
-#upload-button.enabled:hover { border: 3px solid white; }
+#upload-button.enabled:hover { border: 2px solid white; }
 #upload-button.disabled { !important; background: gray; }
 .form-input {
     width: 100%;
@@ -52,6 +60,22 @@
     border: 3px solid transparent;
     transition: 0.3s ease;
     height: 30px;
+}
+a {
+    text-decoration: none;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 3px;
+    color: black;
+    background: deeppink;
+    font-size: x-large;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    transition: border 0.3s ease;
+    text-align: center;
+}
+a:hover {
+    border: 2px solid white;
 }
 #image-input-label:hover {
     border: 3px solid white;

@@ -1,4 +1,4 @@
-async function getOutfits() {
+async function getOutfits(search) {
     const url = `https://api.github.com/repos/as1624/amelia/contents/json`;
 
     try {
@@ -24,18 +24,25 @@ async function getOutfits() {
                 let content = document.getElementById('content');
 
                 console.log(outfit);
+                let tags = outfit.tags.toString().toLowerCase().split(" ");
                 let innerContent = `<div id="outfit-container">
                     <h3 id="outfit-name">${outfit.name}</h3>
                     <div id="outfit-img-container">
                         <img src="${URL.createObjectURL(outfit.blob)}" alt="">
                     </div>
+                    <div id="outfit-description">${outfit.description}</div>
                     <div id="tag-container">`
-                //<div id="outfit-description">${outfit.description}</div>
-                outfit.tags.toString().split(" ").forEach(tag => {
+                tags.forEach(tag => {
                     innerContent += `<span id="outfit-tag">${tag}</span>`
                 })
                 innerContent += "</div></div>"
-                content.innerHTML += innerContent
+                if(
+                    !search
+                    || tags.indexOf(search.toLowerCase()) > -1
+                    || outfit.description.indexOf(search.toLowerCase()) > -1
+                ) {
+                    content.innerHTML += innerContent
+                }
             }
             catch (error) {
                 console.log(error);

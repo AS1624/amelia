@@ -19,6 +19,7 @@
             </div>
         </div>
         <div id="quick-links" class="header-link">
+            <a href="index.html" >home</a>
             <a href="index.html?search=pink" >pink</a>
             <a href="index.html?search=emo" >emo</a>
         </div>
@@ -28,7 +29,16 @@
     </div>
     <script src="enumerate.js"></script>
     <script>
-        getOutfits();
+        document.getElementById("search").addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                window.location.href = (
+                    "index.html?search="
+                    + encodeURIComponent(document.getElementById("search").value)
+                )
+            }
+        })
+        const params = new URLSearchParams(window.location.search);
+        getOutfits(params.get('search'));
     </script>
 </body>
 </html>
