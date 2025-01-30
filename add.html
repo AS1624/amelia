@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="body.css">
     <link rel="stylesheet" href="add.css">
 </head>
-<body>
+<body id="body">
     <header>
         <div id="top">
             <a href="index.html">Home</a>
@@ -65,6 +65,13 @@
                 })
                 document.getElementById("image-input-container").className = "has-upload"
             }
+            function clearPopup() {
+                document.getElementById("popup").innerHTML = "upload complete!"
+                setTimeout(() => {
+                    document.getElementById("popup-container").remove()
+                }, 2000)
+
+            }
             function updateInputStatus(event) {
                 let uploadButton = document.getElementById("upload-button");
                 console.log("upload status changed");
@@ -80,6 +87,13 @@
                     uploadButton.className = "enabled"
                 }
             }
+            function showPopup() {
+                document.getElementById("body").innerHTML += (
+                    "<div id='popup-container'>"
+                    + "<div id='popup'>uploading...</div>"
+                    + "</div>"
+                )
+            }
         </script>
         <script src="upload.js"></script>
         <script>
@@ -87,12 +101,16 @@
             button.addEventListener('click', async () => {
                 if(button.className === "enabled" && file) {
                     console.log("uploading!")
+                    showPopup();
                     await sendToBackend(
                         document.getElementById('name').value,
                         document.getElementById('description').value,
                         document.getElementById('tags').value,
                         file
-                    );
+                    ).then((response) => {
+                        console.log(response);
+                        clearPopup();
+                    });
                 }
             });
         </script>
