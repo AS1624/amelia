@@ -9,35 +9,27 @@ async function toBase64(file) {
 }
 
 async function sendToBackend(name, description, tags, file) {
-    try {
-        const imageBase64 = await toBase64(file);
+    const imageBase64 = await toBase64(file);
 
-        const apiUrl = 'https://amelia-production.up.railway.app/api/toGithub'
+    const apiUrl = 'https://amelia-production.up.railway.app/api/toGithub'
 
-        // Payload to send to the backend
-        const payload = {
-            name: name,
-            description: description,
-            tags: tags,
-            imageBase64: imageBase64,
-        };
+    // Payload to send to the backend
+    const payload = {
+        name: name,
+        description: description,
+        tags: tags,
+        imageBase64: imageBase64,
+    };
 
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-        });
+    const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    });
 
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-        }
-
-        const result = await response.json();
-
-        // Fetch and display the uploaded image
-        const rawImageUrl = `https://raw.githubusercontent.com/AS1624/ameliacdn/main/images/${file.name}`;
-
-    } catch (error) {
-        console.error('Error uploading image:', error);
+    if (!response.ok) {
+        console.error('Error uploading image:', response.statusText);
+        throw new Error(`Error: ${response.statusText}`);
     }
+    return response.statusCode;
 }
