@@ -5,11 +5,8 @@
     all: unset;
     border-radius: 5px;
     padding: 10px;
-    font-size: x-large;
-    height: 30px;
-    border: 3px solid transparent;
+    font-size: large;
     transition: 0.3s ease;
-    margin: 10px;
 }
 #upload-button.enabled { background: deeppink; }
 #upload-button.enabled:hover { border: 3px solid white; }
