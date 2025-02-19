@@ -28,6 +28,7 @@ async function getOutfits(search) {
                 let innerContent = `<div id="outfit-container">
                     <h3 id="outfit-name">${outfit.name}</h3>
                     <div id="outfit-img-container">
+                    <a href="/outfit.html?id=${file.name}"></a>
                         <img src="${URL.createObjectURL(outfit.blob)}" alt="">
                     </div>
                     <div id="outfit-description">${outfit.description}</div>

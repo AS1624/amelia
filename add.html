@@ -80,6 +80,13 @@
                     uploadButton.className = "enabled"
                 }
             }
+            function clearInput() {
+                document.getElementById("name").value = "";
+                document.getElementById("description").value = "";
+                document.getElementById("tags").value = "";
+                showInput();
+                file = null
+            }
             function showPopup() {
                 let popup = document.createElement("div");
                 popup.id = "popup-container";
@@ -110,7 +117,6 @@
                 if(button.className === "enabled" && file) {
                     console.log("uploading!")
                     showPopup();
-                    console.log(document.getElementById("name").value)
                     await sendToBackend(
                         document.getElementById('name').value,
                         document.getElementById('description').value,
@@ -118,6 +124,7 @@
                         file
                     ).then((response) => {
                         console.log(response);
+                        clearInput()
                         clearPopup(response);
                     });
                 }

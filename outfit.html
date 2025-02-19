@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add outfit</title>
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="body.css">
+    <link rel="stylesheet" href="add.css">
+</head>
+<body id="body">
+<header>
+    <div id="top">
+        <div id="search-container" class="ilb">
+            <input id="search" type="text" placeholder="search styles, colors, etc."/>
+        </div>
+        <div id="add-container" class="ilb">
+            <a href="add.html"> add outfit</a>
+        </div>
+    </div>
+    <div id="quick-links" class="header-link">
+        <a href="index.html" >home</a>
+        <a href="index.html?search=pink" >pink</a>
+        <a href="index.html?search=emo" >emo</a>
+    </div>
+</header>
+
+<div id="content">
+    loading...
+</div>
+<script src="enumerate.js"></script>
+<script>
+    document.getElementById("search").addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            window.location.href = (
+                "index.html?search="
+                + encodeURIComponent(document.getElementById("search").value)
+            )
+        }
+    })
+    const params = new URLSearchParams(window.location.search);
+
+    try {
+        let json = fetch("json/" + params.get("id") + ".json").then(result => result.json())
+        let outfit = {
+            name: json.name,
+            description: json.description,
+            tags: json.tags,
+            blob: base64ToBlob(json.imageBase64),
+        }
+
+        console.log(outfit);
+        let tags = outfit.tags.toString().toLowerCase().split(" ");
+        let innerContent = `<div id="outfit-container">
+                    <h3 id="outfit-name">${outfit.name}</h3>
+                    <div id="outfit-img-container">
+                        <img src="${URL.createObjectURL(outfit.blob)}" alt="">
+                    </div>
+                    <div id="outfit-description">${outfit.description}</div>
+                    <div id="tag-container">`
+        tags.forEach(tag => {
+            innerContent += `<span id="outfit-tag">${tag}</span>`
+        })
+        innerContent += "</div></div>"
+        document.getElementById("contend").innerHTML = innerContent
+    }
+    catch (error) {
+        console.log(error);
+    }
+</script>
+</body>
+</html>
