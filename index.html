@@ -20,8 +20,6 @@
         </div>
         <div id="quick-links" class="header-link">
             <a href="index.html" >home</a>
-            <a href="index.html?search=pink" >pink</a>
-            <a href="index.html?search=emo" >emo</a>
         </div>
     </header>
 
@@ -29,6 +27,41 @@
     </div>
     <script src="enumerate.js"></script>
     <script>
+        /*let tagHTMLlist = document.getElementById("content").getElementsByClassName("tag")
+        let tags = []
+        let freq = []
+
+        for (let i = 0; i < tagHTMLlist.length; i++) {
+            item = tagHTMLlist.item(i)
+            let index = tags.indexOf(item.innerHTML);
+            if(index > -1){
+                freq[index] ++
+            }
+            else {
+                tags.push(item.innerHTML)
+                freq.push(1)
+            }
+        }
+        console.debug(tags)
+        let tagsCpy = tags.map(function(p1, p2,p3){return p1;}, undefined)
+         */
+        const params = new URLSearchParams(window.location.search);
+        let output = getOutfits(params.get('search'));
+        output.then(() => {
+            let tags = output[0];
+            let freq = output[1];
+            tags.sort((a, b) => {
+                return freq[tagsCpy.indexOf(a)] - freq[tagsCpy.indexOf(b)]
+            })
+            for(let i = 0; i < tags.length;
+        i++
+        )
+        {
+            document.getElementById("quick-links").innerHTML += `
+                <a href="index.html?search=${tags[i].innerHTML}" >${tags[i].innerHTML}</a>
+                `
+        }
+        })
         document.getElementById("search").addEventListener("keyup", function(event) {
             if (event.keyCode === 13) {
                 window.location.href = (
@@ -37,8 +70,6 @@
                 )
             }
         })
-        const params = new URLSearchParams(window.location.search);
-        getOutfits(params.get('search'));
     </script>
 </body>
 </html>
