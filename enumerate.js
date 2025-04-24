@@ -1,5 +1,5 @@
 async function getOutfits(search) {
-    const url = `https://api.github.com/repos/as1624/amelia/contents/json`;
+    const url = getUrl() // from env.js
 
     let output = [
         [],
