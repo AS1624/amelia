@@ -1,10 +1,7 @@
 async function getOutfits(search) {
     const url = getUrl() // from env.js
 
-    let output = [
-        [],
-        []
-    ]
+    let output = []
     const response = await fetch(url, {
         headers: { "Accept": "application/vnd.github.v3+json" }
     });
@@ -14,7 +11,6 @@ async function getOutfits(search) {
     }
 
     const data = await response.json();
-    console.log(data);
     data.map(async file => {
         let json = await fetch("json/" + file.name).then(result => result.json())
         let outfit = {
@@ -25,7 +21,6 @@ async function getOutfits(search) {
         }
         let content = document.getElementById('content');
 
-        console.log(outfit);
         let tags = outfit.tags.toString().toLowerCase().split(" ");
         let innerContent = `<div id="outfit-container">
             <h3 id="outfit-name">${outfit.name}</h3>
@@ -36,13 +31,16 @@ async function getOutfits(search) {
             <div id="outfit-description">${outfit.description}</div>
             <div id="tag-container">`
         tags.forEach(tag => {
-            let index = tags.indexOf(tag);
+            let index = -1
+            for (let i = 0; i < output.length; i++) {
+                if(output[i][0] === tag) index = i
+            }
+
             if(index > -1){
-                output[1][index] ++
+                output[index][1] ++
             }
             else {
-                output[0].push(tag)
-                output[1].push(1)
+                output.push([tag, 1])
             }
             innerContent += `<span id="outfit-tag">${tag}</span>`
         })
@@ -59,7 +57,6 @@ async function getOutfits(search) {
     return output
 }
 function base64ToBlob(base64, mimeType = '') {
-    console.log(base64)
     const byteCharacters = atob(base64); // Decode Base64
     const byteNumbers = new Array(byteCharacters.length);
 

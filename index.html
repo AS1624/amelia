@@ -28,40 +28,20 @@
     <script src="env.js"></script>
     <script src="enumerate.js"></script>
     <script>
-        /*let tagHTMLlist = document.getElementById("content").getElementsByClassName("tag")
-        let tags = []
-        let freq = []
-
-        for (let i = 0; i < tagHTMLlist.length; i++) {
-            item = tagHTMLlist.item(i)
-            let index = tags.indexOf(item.innerHTML);
-            if(index > -1){
-                freq[index] ++
-            }
-            else {
-                tags.push(item.innerHTML)
-                freq.push(1)
-            }
-        }
-        console.debug(tags)
-        let tagsCpy = tags.map(function(p1, p2,p3){return p1;}, undefined)
-         */
         const params = new URLSearchParams(window.location.search);
-        let output = getOutfits(params.get('search'));
-        output.then(() => {
-            let tags = output[0];
-            let freq = output[1];
-            tags.sort((a, b) => {
-                return freq[tagsCpy.indexOf(a)] - freq[tagsCpy.indexOf(b)]
+        getOutfits(params.get('search')).then((value) => {
+            console.log(value)
+            value.sort((a, b) => {
+                return a[1] - b[1]
             })
-            for(let i = 0; i < tags.length;
-        i++
-        )
-        {
-            document.getElementById("quick-links").innerHTML += `
-                <a href="index.html?search=${tags[i].innerHTML}" >${tags[i].innerHTML}</a>
-                `
-        }
+            console.log(value)
+            for (const tag of value) {
+                console.log("added")
+                const a = document.createElement("a");
+                a.href = `index.html?search=${tag[0]}`;
+                a.textContent = tag[0];
+                document.getElementById("quick-links").appendChild(a);
+            }
         })
         document.getElementById("search").addEventListener("keyup", function(event) {
             if (event.keyCode === 13) {
