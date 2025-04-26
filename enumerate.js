@@ -14,7 +14,14 @@ async function getOutfits(search) {
 
     // Map over the data and create an array of promises
     const promises = data.map(async file => {
-        let json = await fetch("json/" + file.name).then(result => result.json());
+        let json = await fetch("json/" + file.name)
+            .then(result => {
+                console.log(result);
+                console.log(result.body);
+                return result.json()
+
+            });
+        console.log(json)
         let outfit = {
             name: json.name,
             description: json.description,
