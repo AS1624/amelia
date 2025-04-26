@@ -29,20 +29,24 @@
     <script src="enumerate.js"></script>
     <script>
         const params = new URLSearchParams(window.location.search);
-        getOutfits(params.get('search')).then((value) => {
-            console.log(value)
-            value.sort((a, b) => {
+        async function populate() {
+            let value = await getOutfits(params.get('search'))
+            console.log(value.toString())
+            let sorted = value.toSorted((a, b) => {
                 return a[1] - b[1]
             })
-            console.log(value)
-            for (const tag of value) {
+            console.log(sorted.toString())
+            console.log(sorted.length)
+            //console.log(Array.from(value))
+            for (const tag of sorted) {
                 console.log("added")
                 const a = document.createElement("a");
                 a.href = `index.html?search=${tag[0]}`;
                 a.textContent = tag[0];
                 document.getElementById("quick-links").appendChild(a);
             }
-        })
+        }
+        populate();
         document.getElementById("search").addEventListener("keyup", function(event) {
             if (event.keyCode === 13) {
                 window.location.href = (
