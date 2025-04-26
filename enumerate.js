@@ -9,6 +9,7 @@ async function getOutfits(search) {
         throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
     }
 
+    console.log(response);
     const data = await response.json();
 
     // Map over the data and create an array of promises
